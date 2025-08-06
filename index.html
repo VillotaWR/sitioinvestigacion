@@ -356,221 +356,31 @@
         animate();
 
     </script>
+    <!-- Widget Configuration -->
 
      <script>
-         (function() {
-           // Configuration
-            const primaryColor = '#10b981';
-            const position = 'bottom-right';
-            const promptMessage = 'Hablar con el contenido del curso de metodología de investigación de Wellington Villota';
-            // const chatText = 'Conversación de chat'; // Eliminado
-            const callText = 'Conversación de voz';
-            const graphText = 'knowledge graph';
-            const telegramText = 'Telegram';
-            // const chatUrl = ''; // Eliminado
-            const callUrl = 'https://elevenlabs.io/app/talk-to?agent_id=agent_1901k1jwhtv2e0ybkzmtgs2s02pb';
-            const graphUrl = '';
-            const telegramUrl = '';
-            const buttonLabel = 'Hablar con este contenido';
-            const backToWidgetText = 'volver al widget';
-            // const chatConfig = {}; // Eliminado
-
-  // Position styles
-  const positions = {
-    'bottom-right': 'bottom: 24px; right: 24px;',
-    'bottom-left': 'bottom: 24px; left: 24px;',
-    'top-right': 'top: 24px; right: 24px;',
-    'top-left': 'top: 24px; left: 24px;'
-  };
-
-  // Create widget
-  const widget = document.createElement('div');
-  widget.id = 'interaction-widget-container';
-  widget.style.cssText = 'position: fixed; z-index: 999999; ' + positions[position];
-
-  const wrapper = document.createElement('div');
-  wrapper.style.cssText = 'display: flex; align-items: center; gap: 12px;';
-
-  if (buttonLabel) {
-    const label = document.createElement('span');
-    label.textContent = buttonLabel;
-    label.style.cssText = 'background: rgba(0,0,0,0.7); color: white; padding: 8px 16px; border-radius: 24px; font-size: 14px; cursor: pointer;';
-    label.onclick = function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      button.click();
-    };
-    wrapper.appendChild(label);
-  }
-
-  const button = document.createElement('button');
-  button.style.cssText = 'width: 56px; height: 56px; border-radius: 50%; background: ' + primaryColor + '; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
-  button.innerHTML = '<svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: white;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-
-  const popup = document.createElement('div');
-  popup.style.cssText = 'position: absolute; ' + (position.includes('bottom') ? 'bottom: 70px;' : 'top: 70px;') + ' ' + (position.includes('right') ? 'right: 0;' : 'left: 0;') + ' background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); padding: 16px; min-width: 280px; display: none;';
-  
-  // --- MODIFICACIÓN: Se ha eliminado el botón de chat de este bloque ---
-  let popupHtml = `
-    <h3 style="font-size: 14px; font-weight: 500; color: #374151; margin: 0 0 12px 0;">${promptMessage}</h3>
-  `;
-  
-  if (callUrl) {
-    popupHtml += `
-      <button class="call-btn" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #f9fafb; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 8px; font-size: 14px;">
-        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #3b82f6;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        ${callText}
-      </button>
-    `;
-  }
-  
-  if (graphUrl) {
-    popupHtml += `
-      <button class="graph-btn" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #f9fafb; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-bottom: 8px; font-size: 14px;">
-        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; stroke: #8b5cf6; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>
-        ${graphText}
-      </button>
-    `;
-  }
-  
-  if (telegramUrl) {
-    popupHtml += `
-      <button class="telegram-btn" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #f9fafb; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-size: 14px;">
-        <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #0088cc;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.56c-.21 2.27-1.13 7.75-1.6 10.29-.2 1.08-.59 1.44-.97 1.47-.82.07-1.45-.54-2.24-.97-1.24-.68-1.94-1.1-3.15-1.77-1.39-.77-.49-1.19.3-1.88.21-.18 3.85-3.53 3.92-3.83.01-.04.02-.18-.07-.26s-.22-.05-.31-.03c-.13.03-2.21 1.41-6.24 4.13-.59.41-1.12.61-1.6.6-.53-.01-1.54-.3-2.29-.54-.92-.3-1.65-.46-1.59-.97.03-.27.4-.54 1.11-.83 4.34-1.89 7.24-3.14 8.69-3.75 4.14-1.72 5-2.02 5.56-2.03.12 0 .39.03.57.17.15.12.19.28.21.44-.01.12-.03.31-.05.47z"/></svg>
-        ${telegramText}
-      </button>
-    `;
-  }
-  
-  popup.innerHTML = popupHtml;
-
-  let isOpen = false;
-  button.onclick = function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    isOpen = !isOpen;
-    popup.style.display = isOpen ? 'block' : 'none';
-    button.innerHTML = isOpen 
-      ? '<svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: white;"><path d="M19 9l-7 7-7-7"/></svg>'
-      : '<svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: white;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-  };
-
-  // Function to extract agent ID from call URL
-  function extractAgentId(url) {
-    try {
-      const urlObj = new URL(url);
-      const agentId = urlObj.searchParams.get("agent_id");
-      return agentId || "agent_01jvx2jt9pf9vbs7k64s6dn50y"; // fallback to default
-    } catch (error) {
-      console.error("Error extracting agent ID:", error);
-      return "agent_01jvx2jt9pf9vbs7k64s6dn50y"; // fallback to default
-    }
-  }
-
-  // Function to inject the ElevenLabs convai widget
-  function injectElevenLabsWidget() {
-    try {
-      const agentId = extractAgentId(callUrl);
-      
-      widget.innerHTML = '';
-      
-      const backLink = document.createElement('a');
-      backLink.innerHTML = '&#8617;'; 
-      backLink.href = '#';
-      backLink.style.cssText = 'position: fixed; ' + 
-        (position.includes('right') ? 'right: 4px;' : 'left: 4px;') + 
-        ' bottom: 4px; color: ' + primaryColor + 
-        '; font-size: 20px; cursor: pointer; z-index: 999999; background: rgba(255,255,255,0.8); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);';
-
-      backLink.onclick = function(e) {
-        e.preventDefault();
-        
-        backLink.remove();
-        
-        const convaiElements = document.querySelectorAll('elevenlabs-convai');
-        convaiElements.forEach(el => el.remove());
-        
-        const n8nChatContainer = document.querySelector('.n8n-chat');
-        if (n8nChatContainer) {
-          n8nChatContainer.remove();
+        window.ChatWidgetConfig = {
+        webhook: {
+            url: 'https://n8n.srv852059.hstgr.cloud/webhook/c6bc1be1-372b-4d69-b22c-f45113cfbe45/chat',
+            route: 'general'
+        },
+        branding: {
+            logo: 'https://villotawr.github.io/sitioinvestigacion/logo_peq.png',
+            name: 'Wellington-Villota', // Your company name
+            welcomeText: 'Hola 👋, como puedo ayudarte?', //Welcome message
+            responseTimeText: 'respondemos rapidamente' //Response time message
+        },
+        style: {
+            primaryColor: '#854fff', //Primary color
+            secondaryColor: '#6b3fd4', //Secondary color
+            position: 'right', //Position of the widget (left or right)
+            backgroundColor: '#ffffff', //Background color of the chat widget
+            fontColor: '#333333' //Text color for messages and interface
         }
-        
-        wrapper.appendChild(button);
-        widget.appendChild(wrapper);
-        widget.appendChild(popup);
-        
-        return false;
-      };
-      
-      document.body.appendChild(backLink);
-      
-      const convaiElement = document.createElement('elevenlabs-convai');
-      convaiElement.setAttribute('agent-id', agentId);
-      document.body.appendChild(convaiElement);
-      
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed';
-      script.async = true;
-      script.type = 'text/javascript';
-      document.body.appendChild(script);
-      
-      console.log('ElevenLabs convai widget injected with agent ID: ' + agentId);
-      return true;
-    } catch (error) {
-      console.error("Error injecting ElevenLabs widget:", error);
-      return false;
-    }
-  }
-
-  // --- MODIFICACIÓN: Se ha eliminado la función injectN8nChat() ya que no se necesita ---
-
-  // Add event listeners after the popup is added to the DOM
-  setTimeout(() => {
-    // --- MODIFICACIÓN: Se ha eliminado la referencia y el evento para 'chatBtn' ---
-    const callBtn = popup.querySelector('.call-btn');
-    const graphBtn = popup.querySelector('.graph-btn');
-    const telegramBtn = popup.querySelector('.telegram-btn');
-    
-    if (callBtn) {
-      callBtn.onclick = function() {
-        injectElevenLabsWidget();
-      };
-    }
-    
-    if (graphBtn) {
-      graphBtn.onclick = function() {
-        window.open(graphUrl, '_blank');
-        isOpen = false;
-        popup.style.display = 'none';
-        button.innerHTML = '<svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: white;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-      };
-    }
-    
-    if (telegramBtn) {
-      telegramBtn.onclick = function() {
-        window.open(telegramUrl, '_blank');
-        isOpen = false;
-        popup.style.display = 'none';
-        button.innerHTML = '<svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: white;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-      };
-    }
-    
-    // Close popup when clicking outside
-    document.addEventListener('click', function(e) {
-      if (!widget.contains(e.target) && isOpen) {
-        isOpen = false;
-        popup.style.display = 'none';
-        button.innerHTML = '<svg viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: white;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-      }
-    });
-  }, 100);
-
-  wrapper.appendChild(button);
-  widget.appendChild(wrapper);
-  widget.appendChild(popup);
-  document.body.appendChild(widget);
-})();
+    };
 </script>
+<script src="https://villotawr.github.io/sitioinvestigacion/chatwidget.js"></script>
+<!-- Widget Script --> 
 
 
 </body>
