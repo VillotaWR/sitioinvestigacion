@@ -340,7 +340,7 @@
         <div class="brand-header">
             <img src="${config.branding.logo}" alt="${config.branding.name}">
             <span>${config.branding.name}</span>
-            <button class="close-button">X</button>
+            <button class="close-button">x</button>
         </div>
         <div class="new-conversation">
             <h2 class="welcome-text">${config.branding.welcomeText}</h2>
@@ -359,7 +359,7 @@
             <div class="brand-header">
                 <img src="${config.branding.logo}" alt="${config.branding.name}">
                 <span>${config.branding.name}</span>
-                <button class="close-button">Ã—</button>
+                <button class="close-button">x</button>
             </div>
             <div class="chat-messages"></div>
             <div class="chat-input">
